@@ -1,0 +1,23 @@
+画虚线需要用到函数：CGContextSetLineDash
+此函数需要四个参数：
+context – 这个不用多说
+count – lengths数组的长度
+
+float lengths[] = {10,10};  
+CGContextSetLineDash(context, 0, lengths,2); 
+lengths的值｛10,10｝表示先绘制10个点，再跳过10个点，如此反复，如图：
+-- -- -- -- -- -- --
+如果把lengths值改为｛10, 20, 10｝，则表示先绘制10个点，跳过20个点，绘制10个点，跳过10个点，再绘制20个点，如此反复，如图：
+--    --  ----  --    --    --
+
+phase参数表示在第一个虚线绘制的时候跳过多少个点，举例说明：
+float lengths[] = {10,5};  
+CGContextSetLineDash(context, 0, lengths, 2);
+
+CGContextSetLineDash(context, 5, lengths, 2);
+
+CGContextSetLineDash(context, 8, lengths, 2);
+
+由于lengths值为｛10，5｝，第一条线就是绘制10，跳过5，反复绘制。
+第二条线的phase值为5，则首先绘制【10减去5】，再跳过5，绘制10，反复绘制。
+第三条给也如此，先绘制2，再跳过5，如此反复。
